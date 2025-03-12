@@ -21,7 +21,10 @@ interface QuotesApi {
 
 //implementing ViewModel
 class QuoteViewModel : ViewModel() {
+    //to hold current quote to display
     var currentQuote: String by mutableStateOf("Fetching quote...")
+    var errorMessage: String? by mutableStateOf(null)
+
 
     //initializing retrofit and quotesApi instance
     private val quotesApi: QuotesApi = Retrofit.Builder()
@@ -53,9 +56,11 @@ class QuoteViewModel : ViewModel() {
                     currentQuote = "No quotes found."
                 }
             } catch (e: Exception) {
-                //log an error if fetching the quote fails
+                //if err occurs log the err
                 Log.e("QuoteViewModel", "Error fetching quote: ${e.message}")
-                currentQuote = "Failed to fetch quote."
+                //set err msg to notify the user
+                errorMessage = "Failed to fetch quote. Please check your connection."
+
             }
         }
     }
